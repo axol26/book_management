@@ -1,0 +1,71 @@
+@page
+@model MemberManagementModel
+@{
+    ViewData["Title"] = "Member Management";
+}
+
+<div class="container my-4">
+    <div class="col">
+        <div class="card bg-light">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col text-center">
+                        <i class="fa-solid fa-rectangle-list fa-beat" style="color: #0854d9; font-size: 90px;"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <h4>Member List</h4>
+                        <hr />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped table-bordered" id="memberTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date of Birth</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                    <th>Country</th>
+                                    <th>Member ID</th>
+                                    <th>Password</th>
+                                    <th>Delete?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var member in Model.Members)
+                                {
+                                    <tr>
+                                        <td>@member.Name</td>
+                                        <td>@member.Dob.ToShortDateString()</td>
+                                        <td>@member.Contact</td>
+                                        <td>@member.Email</td>
+                                        <td>@member.Province</td>
+                                        <td>@member.MemberId</td>
+                                        <td>@member.Password</td>
+                                        <td>
+                                            <form method="post" asp-page-handler="Delete">
+                                                <button type="submit" class="btn btn-danger btn-sm" name="memberId" value="@member.MemberId">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#memberTable").DataTable();
+        });
+    </script>
+}

@@ -1,0 +1,211 @@
+@page
+@model BookInventoryModel
+@{
+    ViewData["Title"] = "Book Inventory";
+}
+
+<div class="container-fluid my-4">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card bg-secondary-subtle">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <center>
+                                <h4>Book Details</h4>
+                                <hr />
+                            </center>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <center>
+                                <img id="imgview" src="~/images/books1.png" width="100px" height="150px" />
+                            </center>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <center>
+                                <input type="file" class="form-control" onchange="readURL(this)" />
+                            </center>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Book ID</label>
+                                <div class="input-group">
+                                    <input type="text" asp-for="BookId" class="form-control" placeholder="Book ID" />
+                                    <button type="button" class="btn btn-primary" @onclick="OnGoClick">Go</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="form-label">Book Name</label>
+                                <input type="text" asp-for="BookName" class="form-control" placeholder="Book Name" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Language</label>
+                                <select asp-for="Language" class="form-control">
+                                    <option>English</option>
+                                    <option>Tagalog</option>
+                                </select>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label class="form-label">Current Stock</label>
+                                <input type="number" asp-for="CurrentStock" class="form-control" placeholder="Current Stock" readonly />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Author Name</label>
+                                <input type="text" asp-for="AuthorName" class="form-control" placeholder="Author Name" />
+                            </div>
+                            <div class="form-group mt-2">
+                                <label class="form-label">Issued Books</label>
+                                <input type="number" asp-for="IssuedBooks" class="form-control" placeholder="Issued Books" readonly />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">Genre</label>
+                                <select asp-for="Genres" multiple class="form-control">
+                                    @foreach (var genre in Model.GenreOptions)
+                                    {
+                                        <option value="@genre">@genre</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="form-label">Book Description</label>
+                                <textarea asp-for="BookDescription" class="form-control" placeholder="Book Description" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <div class="d-grid col-3">
+                                <button type="button" class="btn btn-lg btn-block btn-success" @onclick="OnAddClick">Add</button>
+                            </div>
+                            <div class="d-grid col-3">
+                                <button type="button" class="btn btn-lg btn-block btn-warning" @onclick="OnUpdateClick">Update</button>
+                            </div>
+                            <div class="d-grid col-3">
+                                <button type="button" class="btn btn-lg btn-block btn-danger" @onclick="OnDeleteClick">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <center>
+                                <i class="fa-solid fa-book fa-beat" style="color: #0854d9; font-size: 90px;"></i>
+                            </center>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <center>
+                                <h4>Book Inventory</h4>
+                                <hr />
+                            </center>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Book ID</th>
+                                    <th>Book Information</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var book in Model.Books)
+                                {
+                                    <tr>
+                                        <td>@book.BookId</td>
+                                        <td>
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-lg-9">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <strong>@book.BookName</strong>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <b>Author</b> - @book.AuthorName
+                                                                &nbsp;| <b>Language</b> - @book.Language
+                                                                &nbsp;| <b>Genre</b> - @book.Genre
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <b>Current Stock</b> - @book.CurrentStock
+                                                                &nbsp;| <b>Issued Books</b> - @book.IssuedBooks
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <b>Description</b> - @book.BookDescription
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 d-flex align-items-center justify-content-center">
+                                                        <img class="img-fluid" src="@book.ImageUrl" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#imgview").attr("src", e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

@@ -1,0 +1,114 @@
+@page
+@model SignUpModel
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card bg-secondary-subtle">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col text-center">
+                            <i class="fa-solid fa-address-card fa-beat" style="color: #0854d9; font-size: 90px;"></i>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col text-center">
+                            <h3>Member Sign Up</h3>
+                            <hr />
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" asp-for="FullName" class="form-control" placeholder="Full Name" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Date of Birth</label>
+                                    <input type="date" asp-for="DateOfBirth" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Contact Number</label>
+                                    <input type="number" asp-for="ContactNumber" class="form-control" placeholder="Contact Number" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Email ID</label>
+                                    <input type="email" asp-for="EmailId" class="form-control" placeholder="Email ID" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Country</label>
+                                    <select asp-for="Country" class="form-control">
+                                        <option value="">Select</option>
+                                        <option value="Brunei">Brunei</option>
+                                        <option value="Cambodia">Cambodia</option>
+                                        <option value="Indonesia">Indonesia</option>
+                                        <option value="Laos">Laos</option>
+                                        <option value="Malaysia">Malaysia</option>
+                                        <option value="Myanmar (Burma)">Myanmar (Burma)</option>
+                                        <option value="Philippines">Philippines</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="Thailand">Thailand</option>
+                                        <option value="Vietnam">Vietnam</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col text-center">
+                                <hr />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col text-center">
+                                <span class="badge rounded-pill text-bg-primary">Login Credentials</span>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Member ID</label>
+                                    <input type="text" asp-for="MemberId" class="form-control" placeholder="User ID" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" asp-for="Password" class="form-control" placeholder="Password" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row d-flex justify-content-center mt-4">
+                            <div class="d-grid col-4">
+                                <button type="submit" class="btn btn-success btn-lg" asp-page-handler="SignUp">Sign Up</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
