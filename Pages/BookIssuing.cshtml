@@ -10,105 +10,145 @@
             <div class="card bg-secondary-subtle">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col text-center">
-                            <i class="fa-solid fa-address-book fa-beat" style="color: #0854d9; font-size: 90px;"></i>
+                        <div class="col">
+                            <center>
+                                <i class="fa-solid fa-address-book fa-beat" style="color: #0854d9; font-size: 90px;"></i>
+                            </center>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col text-center">
-                            <h3>Book Details</h3>
-                            <hr />
+                        <div class="col">
+                            <center>
+                                <h3>Book Details</h3>
+                                <hr />
+                            </center>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Member ID</label>
-                                <input asp-for="MemberId" class="form-control" placeholder="ID" />
+
+                    @if (TempData["Message"] != null)
+                    {
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            @TempData["Message"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Member ID</label>
+                                    <input type="text" class="form-control" asp-for="MemberId" placeholder="ID" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Book ID</label>
-                                <div class="input-group">
-                                    <input asp-for="BookId" class="form-control" placeholder="Book ID" />
-                                    <button type="button" class="btn btn-primary" asp-page-handler="GetBookDetails">Go</button>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Book ID</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" asp-for="BookId" placeholder="Book ID" />
+                                        <button type="submit" class="btn btn-primary" formaction="?handler=Search">
+                                            <i class="fas fa-search"></i> Go
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-group">Member Name</label>
-                                <input asp-for="MemberName" class="form-control" placeholder="Name" readonly />
+
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-group">Member Name</label>
+                                    <input type="text" class="form-control" asp-for="MemberName" placeholder="Name" readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-group">Book Name</label>
+                                    <input type="text" class="form-control" asp-for="BookName" placeholder="Book Name" readonly />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-group">Book Name</label>
-                                <input asp-for="BookName" class="form-control" placeholder="Book Name" readonly />
+
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-group">Start Date</label>
+                                    <input type="date" class="form-control" asp-for="IssueDate" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-group">End Date</label>
+                                    <input type="date" class="form-control" asp-for="DueDate" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-group">Start Date</label>
-                                <input asp-for="StartDate" class="form-control" placeholder="ID" type="date" />
+
+                        <div class="row">
+                            <div class="d-flex justify-content-center gap-4 mt-4">
+                                <div class="d-grid col-5">
+                                    <button type="submit" class="btn btn-dark btn-lg" formaction="?handler=Issue">Issue Book</button>
+                                </div>
+                                <div class="d-grid col-5">
+                                    <button type="submit" class="btn btn-light btn-lg" formaction="?handler=Return">Return Book</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-group">End Date</label>
-                                <input asp-for="EndDate" class="form-control" placeholder="ID" type="date" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="d-flex justify-content-center gap-4 mt-4">
-                            <div class="d-grid col-5">
-                                <button class="btn btn-dark btn-lg" asp-page-handler="IssueBook">Issue Book</button>
-                            </div>
-                            <div class="d-grid col-5">
-                                <button class="btn btn-light btn-lg" asp-page-handler="ReturnBook">Return Book</button>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+
         <div class="col-md-7">
             <div class="card bg-light">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col text-center">
-                            <i class="fa-solid fa-receipt fa-beat" style="color: #0854d9; font-size: 90px;"></i>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col text-center">
-                            <h4>Issued Books List</h4>
-                            <hr />
+                        <div class="col">
+                            <center>
+                                <i class="fa-solid fa-receipt fa-beat" style="color: #0854d9; font-size: 90px;"></i>
+                            </center>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <hr />
+                            <center>
+                                <h4>Issued Books List</h4>
+                                <hr />
+                            </center>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col">
-                            <asp:DataGrid id="GridView1" runat="server" AutoGenerateColumns="False" CssClass="table table-striped table-bordered">
-                                <Columns>
-                                    <asp:BoundField DataField="member_id" HeaderText="Member ID" />
-                                    <asp:BoundField DataField="member_name" HeaderText="Member Name" />
-                                    <asp:BoundField DataField="book_id" HeaderText="Book ID" />
-                                    <asp:BoundField DataField="book_name" HeaderText="Book Name" />
-                                    <asp:BoundField DataField="issue_date" HeaderText="Issue Date" />
-                                    <asp:BoundField DataField="due_date" HeaderText="Due Date" />
-                                </Columns>
-                            </asp:DataGrid>
+                            <table id="issuedBooksTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Member ID</th>
+                                        <th>Member Name</th>
+                                        <th>Book ID</th>
+                                        <th>Book Name</th>
+                                        <th>Issue Date</th>
+                                        <th>Due Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var issue in Model.IssuedBooks)
+                                    {
+                                        <tr>
+                                            <td>@issue.MemberId</td>
+                                            <td>@issue.MemberName</td>
+                                            <td>@issue.BookId</td>
+                                            <td>@issue.BookName</td>
+                                            <td>@issue.IssueDate.ToShortDateString()</td>
+                                            <td>@issue.DueDate.ToShortDateString()</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -118,10 +158,9 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function () {
-            $(".table").DataTable();
+            $('#issuedBooksTable').DataTable();
         });
     </script>
 }

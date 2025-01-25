@@ -1,6 +1,15 @@
-﻿@{
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@{
     Layout = null;
     var title = ViewData["Title"] as string;
+    var linkedInUrl = Configuration["LinkedIn__Url"];
+    // Add a fallback URL in case the environment variable isn't loaded
+    if (string.IsNullOrEmpty(linkedInUrl))
+    {
+        linkedInUrl = "#"; // or any default URL you want
+    }
 }
 
 <!DOCTYPE html>
@@ -25,7 +34,7 @@
 <body>
     <div class="d-flex flex-column min-vh-100">
 
-        <nav class="navbar navbar-expand-lg p-0 bg-body-secondary">
+        <nav class="navbar navbar-expand-lg p-0 bg-secondary-subtle">
             <div class="container d-flex">
                 <div class="d-flex align-items-center">
                     <a class="navbar-brand py-1" href="/">
@@ -38,17 +47,23 @@
                                 <a class="nav-link" href="/">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/Books">View Books</a>
+                                <a class="nav-link" href="/ViewBooks">View Books</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Profile">Hello xx</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Logout">Logout</a>
-                            </li>
+                            @if (Context.Session.GetString("username") != null)
+                            {
+                                <li class="nav-item">
+                                    <span class="nav-link">Hello @Context.Session.GetString("username")</span>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Logout">Logout</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Login">Login</a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>
@@ -74,28 +89,35 @@
             <div class="container d-flex flex-wrap justify-content-between align-items-center py-3 mt-auto">
                 <p class="col-md-2 mb-0 fw-bold text-light">© 2023 Company, Inc</p>
                 <ul class="nav col-md-8 justify-content-center">
-                    <li class="nav-item text-body-secondary">
-                        <a class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none text-light" href="/Admin">Admin Login</a>
-                    </li>
-                    <li class="nav-item text-body-secondary">
-                        <a class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none text-light" href="/Members">Member Management</a>
-                    </li>
-                    <li class="nav-item px-4 text-body-secondary">
-                        <a class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none text-light" href="/BooksInventory">Book Inventory</a>
-                    </li>
-                    <li class="nav-item text-body-secondary">
-                        <a class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none text-light" href="/BookIssuing">Book Issuing</a>
-                    </li>
+                    @if (Context.Session.GetString("role") == "admin")
+                    {
+                        <li class="nav-item text-body-secondary">
+                            <a class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none text-light" href="/MemberManagement">Member Management</a>
+                        </li>
+                        <li class="nav-item px-4 text-body-secondary">
+                            <a class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none text-light" href="/BookInventory">Book Inventory</a>
+                        </li>
+                        <li class="nav-item text-body-secondary">
+                            <a class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none text-light" href="/BookIssuing">Book Issuing</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item text-body-secondary">
+                            <a class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none text-light" href="/AdminLogin">Admin Login</a>
+                        </li>
+                    }
                 </ul>
                 <ul class="nav col-md-2 justify-content-end">
                     <li class="nav-item">
-                        <a href="#" target="_blank" class="p-0 nav-link text-body-secondary d-flex"><i class="fa-solid fa-house fs-5 btn btn-secondary"></i></a>
-                    </li>
-                    <li class="nav-item px-1">
-                        <a href="https://github.com/axol26" target="_blank" class="p-0 nav-link text-body-secondary"><i class="fa-brands fa-github fs-5 btn btn-secondary"></i></a>
+                        <a href="#" target="_blank" class="p-0 nav-link text-body-secondary d-flex">
+                            <i class="fa-solid fa-house fs-5 btn btn-secondary"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="https://www.linkedin.com/in/leonard-amiel-nania/" target="_blank" class="p-0 nav-link text-body-secondary d-flex"><i class="fa-brands fa-linkedin fs-5 btn btn-secondary"></i></a>
+                        <a href="@linkedInUrl" target="_blank" class="p-0 nav-link text-body-secondary d-flex">
+                            <i class="fa-brands fa-linkedin fs-5 btn btn-secondary"></i>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -103,12 +125,16 @@
     </div>
 
     <!-- jQuery -->
-    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <!-- DataTables JS -->
     <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
 
     <!-- Bootstrap JS -->
-    <script src="~/lib/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

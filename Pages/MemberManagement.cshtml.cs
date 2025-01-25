@@ -1,111 +1,105 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 
 namespace book_management.Pages
 {
     public class MemberManagementModel : PageModel
     {
         private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
+        public List<Member> Members { get; set; } = new();
 
         public MemberManagementModel(IConfiguration configuration)
         {
             _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
         }
 
-        public List<Member> Members { get; set; }
-        public string ErrorMessage { get; set; }
-        public string SuccessMessage { get; set; }
+        public IActionResult OnGet()
+        {
+            // Check if user is admin
+            if (HttpContext.Session.GetString("role") != "admin")
+            {
+                return RedirectToPage("/AdminLogin");
+            }
 
-        public async Task<IActionResult> OnGetAsync()
+            LoadMembers();
+            return Page();
+        }
+
+        public IActionResult OnPostDelete(string memberId)
         {
             if (HttpContext.Session.GetString("role") != "admin")
             {
                 return RedirectToPage("/AdminLogin");
             }
 
-            await LoadMembersAsync();
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPostDeleteAsync(string memberId)
-        {
-            if (string.IsNullOrEmpty(memberId))
-            {
-                ErrorMessage = "Member ID is required.";
-                await LoadMembersAsync();
-                return Page();
-            }
-
             try
             {
-                await DeleteUserProfileAsync(memberId);
-                SuccessMessage = "Member deleted successfully.";
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = ex.Message;
-            }
-
-            await LoadMembersAsync();
-            return Page();
-        }
-
-        private async Task DeleteUserProfileAsync(string memberId)
-        {
-            try
-            {
-                string connectionString = _configuration.GetConnectionString("con");
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
-                    await con.OpenAsync();
-                    SqlCommand cmd = new SqlCommand("DELETE FROM member WHERE member_id=@member_id", con);
+                    con.Open();
+                    using SqlCommand cmd = new SqlCommand(
+                        "DELETE FROM member WHERE member_id=@member_id", con);
+                    
                     cmd.Parameters.AddWithValue("@member_id", memberId);
-                    await cmd.ExecuteNonQueryAsync();
+                    cmd.ExecuteNonQuery();
                 }
+
+                TempData["Message"] = "Member deleted successfully.";
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                TempData["Message"] = $"Error deleting member: {ex.Message}";
             }
+
+            return RedirectToPage();
         }
 
-        private async Task LoadMembersAsync()
+        private void LoadMembers()
         {
             try
             {
-                string connectionString = _configuration.GetConnectionString("con");
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
-                    await con.OpenAsync();
-                    SqlCommand cmd = new SqlCommand("SELECT member_id, member_name FROM member", con);
-                    SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                    Members = new List<Member>();
+                    con.Open();
+                    using SqlCommand cmd = new SqlCommand(
+                        "SELECT * FROM member", con);
 
-                    while (await reader.ReadAsync())
-                    {
-                        Members.Add(new Member
+                    using SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    Members = dt.AsEnumerable()
+                        .Select(row => new Member
                         {
-                            MemberId = reader["member_id"].ToString(),
-                            MemberName = reader["member_name"].ToString()
-                        });
-                    }
+                            Name = row["name"].ToString(),
+                            DateOfBirth = Convert.ToDateTime(row["dob"]),
+                            Contact = row["contact"].ToString(),
+                            Email = row["email"].ToString(),
+                            Country = row["province"].ToString(),
+                            MemberId = row["member_id"].ToString(),
+                            Password = row["password"].ToString()
+                        }).ToList();
                 }
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                TempData["Message"] = $"Error loading members: {ex.Message}";
             }
         }
+    }
 
-        public class Member
-        {
-            public string MemberId { get; set; }
-            public string MemberName { get; set; }
-        }
+    public class Member
+    {
+        public string Name { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Contact { get; set; }
+        public string Email { get; set; }
+        public string Country { get; set; }
+        public string MemberId { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -112,3 +112,10 @@
         </div>
     </div>
 </div>
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        @TempData["AlertMessage"]
+    </div>
+}

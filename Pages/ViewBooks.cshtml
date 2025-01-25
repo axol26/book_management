@@ -10,66 +10,82 @@
             <div class="card bg-light">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col text-center">
-                            <h4>Book Inventory</h4>
+                        <div class="col">
+                            <center>
+                                <h4>Book Inventory</h4>
+                            </center>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col">
                             <hr />
                         </div>
                     </div>
+
                     <div class="row">
-                        <table class="table table-striped table-bordered" id="booksTable">
-                            <thead>
-                                <tr>
-                                    <th>Book ID</th>
-                                    <th>Book Information</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var book in Model.Books)
-                                {
+                        <div class="col">
+                            <table id="booksTable" class="table table-striped table-bordered">
+                                <thead>
                                     <tr>
-                                        <td>@book.BookId</td>
-                                        <td>
-                                            <div class="container-fluid">
-                                                <div class="row">
-                                                    <div class="col-lg-10">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <strong>@book.BookName</strong>
+                                        <th>Book ID</th>
+                                        <th>Book Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var book in Model.Books)
+                                    {
+                                        <tr>
+                                            <td>@book.BookId</td>
+                                            <td>
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-lg-10">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <span class="h5 text-decoration-underline">@book.BookName</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <b>Author</b> - @book.Author |
+                                                                    <b>Language</b> - @book.Language |
+                                                                    <b>Genre</b> - @book.Genre
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <b>Current Stock</b> - @book.CurrentStock |
+                                                                    <b>Issued Books</b> - @book.IssuedBooks
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <b>Description</b> - <i>@book.Description</i>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <b>Author</b> - @book.Author
-                                                                &nbsp;| <b>Language</b> - @book.Language
-                                                                &nbsp;| <b>Genre</b> - @book.Genre
-                                                            </div>
+                                                        <div class="col-lg-2 d-flex align-items-center justify-content-center">
+                                                            @if (!string.IsNullOrEmpty(book.ImageUrl))
+                                                            {
+                                                                <img class="img-fluid" 
+                                                                     src="@Url.Content(book.ImageUrl)" 
+                                                                     alt="@book.BookName"
+                                                                     onerror="this.onerror=null; this.src='/images/default-book.png';" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <img class="img-fluid" src="~/images/Logo.png" alt="No image available" />
+                                                            }
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <b>Current Stock</b> - @book.CurrentStock
-                                                                &nbsp;| <b>Issued Books</b> - @book.IssuedBooks
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <b>Description</b> - @book.Description
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2 d-flex align-items-center justify-content-center">
-                                                        <img class="img-fluid" src="@book.ImageUrl" alt="Book Image" />
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,10 +94,9 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function () {
-            $("#booksTable").DataTable();
+            $('#booksTable').DataTable();
         });
     </script>
 }

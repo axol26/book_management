@@ -55,3 +55,45 @@
         </div>
     </div>
 </div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <asp-validation-summary="All" class="text-danger">User login was incorrect.</asp-validation-summary>
+    </div>
+}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card bg-secondary-subtle">
+                <div class="card-body">
+                    <!-- ... existing login form ... -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8 mx-auto">
+            <h3>Member Information</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Member ID</th>
+                        <th>Password</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var member in Model.Members)
+                    {
+                        <tr>
+                            <td>@member.MemberId</td>
+                            <td>@member.Password</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
