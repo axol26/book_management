@@ -4,12 +4,13 @@
 @{
     Layout = null;
     var title = ViewData["Title"] as string;
-    var linkedInUrl = Configuration["LinkedIn__Url"];
-    // Add a fallback URL in case the environment variable isn't loaded
-    if (string.IsNullOrEmpty(linkedInUrl))
-    {
-        linkedInUrl = "#"; // or any default URL you want
-    }
+    
+    // Get all URLs from environment variables
+    var linkedInUrl = Environment.GetEnvironmentVariable("LinkedIn__Url");
+    var homeUrl = Environment.GetEnvironmentVariable("Home__Url");
+    var githubUrl = Environment.GetEnvironmentVariable("GitHub__Url");
+    var bookMarketUrl = Environment.GetEnvironmentVariable("BookMarket__Url");
+    var bookReviewUrl = Environment.GetEnvironmentVariable("BookReview__Url");
 }
 
 <!DOCTYPE html>
@@ -71,10 +72,10 @@
                 <div class="d-flex align-items-center">
                     <ul class="navbar-nav d-flex justify-content-between">
                         <li class="nav-item pe-3">
-                            <a href="#" class="btn btn-outline-secondary">Book Market</a>
+                            <a href="@Environment.GetEnvironmentVariable("BookMarket__Url")" target="_blank" class="btn btn-outline-secondary">Book Market</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="btn btn-outline-secondary">Book Review</a>
+                            <a href="@Environment.GetEnvironmentVariable("BookReview__Url")" target="_blank" class="btn btn-outline-secondary">Book Review</a>
                         </li>
                     </ul>
                 </div>
@@ -110,12 +111,17 @@
                 </ul>
                 <ul class="nav col-md-2 justify-content-end">
                     <li class="nav-item">
-                        <a href="#" target="_blank" class="p-0 nav-link text-body-secondary d-flex">
+                        <a href="@Environment.GetEnvironmentVariable("Home__Url")" target="_blank" class="p-0 nav-link text-body-secondary d-flex">
                             <i class="fa-solid fa-house fs-5 btn btn-secondary"></i>
                         </a>
                     </li>
+                    <!-- <li class="nav-item px-1">
+                        <a href="@Environment.GetEnvironmentVariable("GitHub__Url")" target="_blank" class="p-0 nav-link text-body-secondary">
+                            <i class="fa-brands fa-github fs-5 btn btn-secondary"></i>
+                        </a>
+                    </li> -->
                     <li class="nav-item">
-                        <a href="@linkedInUrl" target="_blank" class="p-0 nav-link text-body-secondary d-flex">
+                        <a href="@Environment.GetEnvironmentVariable("LinkedIn__Url")" target="_blank" class="p-0 nav-link text-body-secondary d-flex">
                             <i class="fa-brands fa-linkedin fs-5 btn btn-secondary"></i>
                         </a>
                     </li>

@@ -19,7 +19,7 @@ builder.Configuration
     .SetBasePath(root)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
-    .AddEnvironmentVariables()
+    .AddEnvironmentVariables(prefix: "")  // Remove prefix requirement
     .Build();
 
 // Construct connection string directly from environment variables
