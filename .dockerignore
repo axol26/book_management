@@ -1,0 +1,45 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+
+# Visual Studio files
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.dbmdl
+*.dbproj.schemaview
+*.pfx
+*.publishsettings
+
+# Node modules
+node_modules/
+
+# Environment files (optional, comment out if you want to include .env in build)
+# .env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+Log/
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Git
+.git/
+.gitignore
+.gitattributesdoc
+
+# Others
+*.DS_Store
+Thumbs.db
+
+.env
