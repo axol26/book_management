@@ -29,6 +29,6 @@ jobs:
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/book_management:latest            
 
-      # - name: Execute Render Deploy
-      #   run: curl ${{ secrets.RENDER_API }}
+      - name: Execute Render Deploy
+        run: curl ${{ secrets.RENDER_API }}
         
